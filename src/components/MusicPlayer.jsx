@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import {
   FaForward,
   FaBackward,
@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { useMusicContext } from "../context/musicContext";
 
-const MusicPlayer = ({ src }) => {
+const MusicPlayer = () => {
     const audioPlayer = useRef(null) // audio tag
     const progressBar = useRef(null) // seeker(progress)
     const animationRef = useRef(null)
@@ -15,7 +15,6 @@ const MusicPlayer = ({ src }) => {
  
     useEffect(() => {
       if(music) {
-        console.log("whattt",{ music })
         audioPlayer.current.currentTime = 0
         progressBar.current.value = audioPlayer.current.currentTime
       }
@@ -48,7 +47,6 @@ const MusicPlayer = ({ src }) => {
       if(isPlaying) {
         audioPlayer.current.pause()
         cancelAnimationFrame(animationRef.current)
-        console.log(audioPlayer.current.currentTime, progressBar.current.value)
       }
       else {
         if(audioPlayer.current.currentTime === audioPlayer.current.duration) {

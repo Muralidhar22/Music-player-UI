@@ -5,7 +5,7 @@ const MusicContext = createContext({
     setMusic: () => {}
 })
 
-export const MusicProvider = ({children}) => {
+export const MusicProvider = ({ children }) => {
     const [music, setMusic] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
     
