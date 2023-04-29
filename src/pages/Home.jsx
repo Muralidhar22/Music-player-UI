@@ -5,11 +5,13 @@ import Songs from "../components/Songs";
 import { useTabContext } from "../context/tabContext";
 import Search from "../components/Search";
 import { useMusicContext } from "../context/musicContext";
-
+import { useGradientContext } from "../context/gradientContext";
 
 const Home = () => {
     const { tabIndex } = useTabContext()
-    const { music } = useMusicContext()
+    const { gradient } = useGradientContext()
+    
+    console.log({gradient})
     
     return <>
             <div className="h-min-screen w-min-screen">
@@ -21,7 +23,7 @@ const Home = () => {
                     <Tabs />
                     <div>
                         <Search />
-                        <Songs playlistId={tabIndex?.value} />
+                        {tabIndex?.value && <Songs playlistId={tabIndex?.value} />}
                     </div>
                     <MusicPlayer />
                 </div>

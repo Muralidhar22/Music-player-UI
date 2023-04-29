@@ -11,16 +11,15 @@ const MusicPlayer = ({ src }) => {
     const audioPlayer = useRef(null) // audio tag
     const progressBar = useRef(null) // seeker(progress)
     const animationRef = useRef(null)
-    const [duration, setDuration] = useState(0)
     const { music, isPlaying, setIsPlaying } = useMusicContext()
  
     useEffect(() => {
       if(music) {
-        setDuration(Math.floor(audioPlayer.current.duration));
+        console.log("whattt",{ music })
         audioPlayer.current.currentTime = 0
         progressBar.current.value = audioPlayer.current.currentTime
       }
-    },[audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState, audioPlayer.current, music])
+    },[music])
     
     const skipMusicHandler = (direction) => {
       if(isPlaying) {
@@ -46,15 +45,21 @@ const MusicPlayer = ({ src }) => {
     }
     
     const changePlayPause = () => {
-      setIsPlaying(prev => !prev)
       if(isPlaying) {
         audioPlayer.current.pause()
         cancelAnimationFrame(animationRef.current)
+        console.log(audioPlayer.current.currentTime, progressBar.current.value)
       }
       else {
+        if(audioPlayer.current.currentTime === audioPlayer.current.duration) {
+          audioPlayer.current.currentTime = 0
+          progressBar.current.value = 0
+        }
+        else audioPlayer.current.currentTime = progressBar.current.value
         audioPlayer.current.play()
         animationRef.current = requestAnimationFrame(whilePlaying)
       }
+      setIsPlaying(prev => !prev)
     }
 
     const changeProgress = () => {
@@ -76,7 +81,7 @@ const MusicPlayer = ({ src }) => {
         <p>{music?.artist}</p>
         <img src={music.photo} alt="cover image" />
         <div>
-          <input type="range" ref={progressBar} min={0} max={isNaN(duration) ? 100 : duration} onChange={changeProgress} />
+          <input type="range" ref={progressBar} min={0} max={isNaN(audioPlayer.current?.duration) ? 100 : audioPlayer.current?.duration} onChange={changeProgress} />
         </div>
         <div className="flex justify-between">
             <div>three dots</div>
