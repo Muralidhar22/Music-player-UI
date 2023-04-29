@@ -1,10 +1,8 @@
 import MusicPlayer from "../components/MusicPlayer";
 import Tabs from "../components/Tabs";
-import { useEffect } from "react";
 import Songs from "../components/Songs";
 import { useTabContext } from "../context/tabContext";
 import Search from "../components/Search";
-import { useMusicContext } from "../context/musicContext";
 import { useGradientContext } from "../context/gradientContext";
 
 const Home = () => {
