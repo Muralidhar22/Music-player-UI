@@ -19,11 +19,13 @@ const Tabs = () => {
   const { data } = useQuery(LOAD_PLAYLISTS)
   
   useEffect(() => {
-    // Perform any side effect when the active tab changes
-  }, [tabIndex]);
+    if(data) {
+      setTabIndex({ value: data.getPlaylists[0].id, title: data.getPlaylists[0].title })
+    }
+  }, [data]);
 
-  const handleTabClick = (index) => {
-    setTabIndex(index);
+  const handleTabClick = (data) => {
+    setTabIndex({ value: data.id, title: data.title });
   };
   
   if(!data) {
@@ -36,8 +38,8 @@ const Tabs = () => {
               <Tab
               key={val.id}
               label={val.title}
-              active={tabIndex === val.id}
-              onClick={() => handleTabClick(val.id)}
+              active={tabIndex?.value === val.id}
+              onClick={() => handleTabClick(val)}
             />
       ))}
     </div>

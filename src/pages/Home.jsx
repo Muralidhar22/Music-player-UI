@@ -3,26 +3,28 @@ import Tabs from "../components/Tabs";
 import { useEffect } from "react";
 import Songs from "../components/Songs";
 import { useTabContext } from "../context/tabContext";
+import Search from "../components/Search";
+import { useMusicContext } from "../context/musicContext";
 
 
 const Home = () => {
     const { tabIndex } = useTabContext()
-    useEffect(() => {
-//   "https://images.genius.com/f2f383e82d33c1f4b4c5a46c55039513.582x594x1.jpg"
-        const coverImg = new Image()
-        coverImg.onload = function () { 
-            const what = colorThief.getColor(coverImg) 
-            console.log(what)
-        }
-        coverImg.src="https://images.genius.com/f2f383e82d33c1f4b4c5a46c55039513.582x594x1.jpg"
-        coverImg.crossOrigin = 'Anonymous';
-    },[])
-
+    const { music } = useMusicContext()
+    
     return <>
             <div className="h-min-screen w-min-screen">
-                <Tabs />
-                <MusicPlayer />
-                <Songs playlistId={tabIndex} />
+                <div className="flex gap-20">
+                    <img src="/Logo.svg" alt="Spotify Logo" />
+                    {tabIndex && <h2 className="text-3xl font-bold">{tabIndex.title}</h2>}
+                </div>
+                <div className="flex justify-between">
+                    <Tabs />
+                    <div>
+                        <Search />
+                        <Songs playlistId={tabIndex?.value} />
+                    </div>
+                    <MusicPlayer />
+                </div>
             </div>
     </>
 }

@@ -4,7 +4,7 @@ import SongTile from "./SongTile";
 
 const Songs = ({ playlistId, search }) => {
     const { data, loading } = useQuery(LOAD_SONGS, { variables: { playlistId: parseInt(playlistId), search: search ?? "" }})
-    
+
     if(loading) {
         return <div>Loading...</div>
     }
@@ -13,11 +13,11 @@ const Songs = ({ playlistId, search }) => {
         return null
     }
     
-    return <>
+    return <div>
         {data.getSongs.map((val) => (
             <SongTile key={val._id} songData={val}/>
         ))}
-    </>
+    </div>
 }
 
 export default Songs;

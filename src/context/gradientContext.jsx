@@ -1,31 +1,13 @@
 import { createContext, useContext, useState } from "react";
-import ColorThief from "colorthief";
-import { arrayToRgb } from "../utils/arrayToRgb";
 
-const colorThief = new ColorThief()
-
-const GradientContext = createContext({
-    gradientColor: "black",
-    setGradientColor: () => {}
-})
+const GradientContext = createContext(undefined)
 
 export const GradientProvider = ({children}) => {
     const [gradient, setGradient] = useState("black")
-    
-    const updateBgGradient = (imageUrl) => {
-        const coverImg = new Image()
-        coverImg.onload = function () { 
-            const gradientColor = colorThief.getColor(coverImg) 
-            setGradient(arrayToRgb(gradientColor))
-        }
-        coverImg.src=imageUrl
-        coverImg.crossOrigin = 'Anonymous';
-    }
-    
+
     const value = {
         gradient,
-        setGradient, 
-        updateBgGradient
+        setGradient
     }
     return <GradientContext.Provider value={value}>{children}</GradientContext.Provider>
 }

@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import './App.css'
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error"
 
@@ -26,8 +24,9 @@ const client = new ApolloClient({
 
 function App() {
   const { gradient } = useGradientContext()
+  
   return (
-    <div className={`bg-gradient-to-tl from-black to-[${gradient}] p-2 text-white min-w-screen`}>
+    <div style={{ "--gradient": gradient }} className="app p-2 text-white min-h-screen">
       <ApolloProvider client={client}>
         <Home />
       </ApolloProvider>

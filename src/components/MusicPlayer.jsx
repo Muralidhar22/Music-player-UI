@@ -5,17 +5,22 @@ import {
   FaPlay,
   FaPause,
 } from "react-icons/fa";
+import { useMusicContext } from "../context/musicContext";
 
-const MusicPlayer = () => {
-    const audioPlayer = useRef() // audio tag
-    const progressBar = useRef() // seeker(progress)
-    const animationRef = useRef()
-    const [isPlaying, setIsPlaying] = useState(false)
+const MusicPlayer = ({ src }) => {
+    const audioPlayer = useRef(null) // audio tag
+    const progressBar = useRef(null) // seeker(progress)
+    const animationRef = useRef(null)
     const [duration, setDuration] = useState(0)
-    
+    const { music, isPlaying, setIsPlaying } = useMusicContext()
+ 
     useEffect(() => {
-      setDuration(Math.floor(audioPlayer.current.duration));
-    },[audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState, audioPlayer.current])
+      if(music) {
+        setDuration(Math.floor(audioPlayer.current.duration));
+        audioPlayer.current.currentTime = 0
+        progressBar.current.value = audioPlayer.current.currentTime
+      }
+    },[audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState, audioPlayer.current, music])
     
     const skipMusicHandler = (direction) => {
       if(isPlaying) {
@@ -33,7 +38,7 @@ const MusicPlayer = () => {
       if(Math.floor(audioPlayer.current.currentTime) === 
       Math.floor(audioPlayer.current.duration)) { 
         cancelAnimationFrame(animationRef.current)
-        setIsPlaying(false)
+        setIsPlaying(prev => !prev)
         return
      }
       progressBar.current.value = audioPlayer.current.currentTime
@@ -56,16 +61,20 @@ const MusicPlayer = () => {
       audioPlayer.current.currentTime = progressBar.current.value
     }
     
+    if(!music) {
+      return <div>Tune in</div>
+    }
+
     return (
        <>
-       <audio src="https://storage.googleapis.com/similar_sentences/Imagine%20Dragons%20-%20West%20Coast%20(Pendona.com).mp3"
+       <audio src={music?.url}
         ref={audioPlayer}
-        preload = "metadata"
+        preload="metadata"
        />
        <div>
-        <h1>Title</h1>
-        <p>Artist</p>
-        <img src="" alt="cover image" />
+        <h1>{music?.title}</h1>
+        <p>{music?.artist}</p>
+        <img src={music.photo} alt="cover image" />
         <div>
           <input type="range" ref={progressBar} min={0} max={isNaN(duration) ? 100 : duration} onChange={changeProgress} />
         </div>

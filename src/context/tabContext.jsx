@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from "react";
 
 const TabContext = createContext({
-    tabIndex: 1,
+    tabIndex: {value: 1, title: ""},
     setTabIndex: () => {}
 })
 
 export const TabProvider = ({children}) => {
-    const [tabIndex, setTabIndex] = useState(1)
+    const [tabIndex, setTabIndex] = useState()
     const value = {
         tabIndex,
         setTabIndex
