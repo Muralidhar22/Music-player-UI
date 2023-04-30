@@ -26,7 +26,7 @@ function App() {
   const { gradient } = useGradientContext()
   
   return (
-    <div style={{ "--gradient": gradient }} className="app p-3 lg:p-7 text-white min-h-screen">
+    <div style={{ "--gradient": gradient }} className="font-basier app p-3 lg:p-7 text-white min-h-screen">
       <ApolloProvider client={client}>
         <Home />
       </ApolloProvider>

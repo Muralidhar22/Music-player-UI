@@ -36,7 +36,7 @@ const SongTile = ({ songData }) => {
     const { artist, duration, photo, title } = songData
     const convertedDuration = convertMusicDuration(duration)
     const { setGradient } = useGradientContext()
-    const { setMusic, setIsPlaying } = useMusicContext()
+    const { setMusic, setIsPlaying, isPlaying } = useMusicContext()
     const imageRef = useRef()
     
     const handleSongClick = async () => {
@@ -50,7 +50,6 @@ const SongTile = ({ songData }) => {
             setGradient(rgbValue)
         }
         setMusic(songData)
-        setIsPlaying(true)
     }
     
     return (<div onClick={handleSongClick} className="flex gap-3 items-center p-2 cursor-pointer">
