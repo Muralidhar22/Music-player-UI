@@ -7,7 +7,7 @@ const Tab = ({ label, active, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className={`cursor-pointer ${active}`}
+      className={`cursor-pointer ${active ? "opacity-100" : "opacity-60"}`}
     >
       {label}
     </div>
@@ -33,16 +33,18 @@ const Tabs = () => {
   }
 
   return (
-    <div>
-      {data.getPlaylists.map(val => (
-              <Tab
-              key={val.id}
-              label={val.title}
-              active={tabIndex?.value === val.id}
-              onClick={() => handleTabClick(val)}
-            />
-      ))}
-    </div>
+    <>
+      <div className="overflow-x-auto whitespace-nowrap p-3 lg:p-0 flex lg:flex-col gap-5">
+        {data.getPlaylists.map(val => (
+                <Tab
+                key={val.id}
+                label={val.title}
+                active={tabIndex?.value === val.id}
+                onClick={() => handleTabClick(val)}
+              />
+        ))}
+      </div>
+    </>
   );
 };
 

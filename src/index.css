@@ -7,10 +7,11 @@
     margin: 0;
     max-width: 100%;
 }
+
 :root {
     --gradient: black;
 }
+
 .app {
     background: linear-gradient(to top left, rgba(51, 66, 94, 0.6) 2.46%, var(--gradient) 99.84%), #000000;
-    transition: all 1.5s ease-in;
 }

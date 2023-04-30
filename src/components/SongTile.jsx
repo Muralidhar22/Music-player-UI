@@ -52,16 +52,16 @@ const SongTile = ({ songData }) => {
         setMusic(songData)
     }
     
-    return (<div onClick={handleSongClick} className="flex p-2 cursor-pointer gap-3">
+    return (<div onClick={handleSongClick} className="flex gap-3 items-center p-2 cursor-pointer">
         <div className="overflow-hidden rounded-full">
-            <img ref={imageRef} className="block w-12 h-12" src={photo} alt={title} />
+            <img ref={imageRef} className="block w-14 h-12" src={photo} alt={title} />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between w-full items-center">
             <div>
-                <h3 className="text-lg">{title}</h3>
-                <div>{artist}</div>
+                <h3 className="">{title}</h3>
+                <div className="opacity-40">{artist}</div>
             </div>
-            <div>{convertedDuration}</div>
+            <div className="opacity-40">{convertedDuration}</div>
         </div>
     </div>)
 }
