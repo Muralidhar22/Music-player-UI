@@ -22,6 +22,7 @@ const MusicPlayer = () => {
         audioPlayer.current.currentTime = 0
         progressBar.current.value = audioPlayer.current.currentTime
         thumbRef.current.style.width = `${(audioPlayer.current.currentTime / audioPlayer.current.duration) * 100}%`;
+        audioPlayer.current.play()
       }
     },[music])
     
