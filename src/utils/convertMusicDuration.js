@@ -3,6 +3,7 @@ export const convertMusicDuration = (duration) => {
     if(duration) {
         const minutes = Math.floor(duration / 60)
         const seconds = duration % 60
-        return `${minutes}:${seconds}`
+        
+        return `${minutes}:${seconds}${seconds < 10 ? "0" : ""}`
     }
 }
