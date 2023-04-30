@@ -27,7 +27,9 @@ const Home = () => {
                     <div className="lg:mx-auto">
                         <MusicPlayer />
                     </div>
-
+               <div className="hidden rounded-full overflow-hidden w-10 h-10 lg:block sticky bottom-2 left-2">
+                <img src="/profile-pic.png" className="block" />
+               </div>
             </div>
     </>
 }

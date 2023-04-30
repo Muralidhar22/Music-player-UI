@@ -76,7 +76,7 @@ const MusicPlayer = () => {
       setIsPlaying(prev => !prev)
     }
 
-    const changeProgress = (e) => {
+    const changeProgress = () => {
       audioPlayer.current.currentTime = progressBar.current.value
       thumbRef.current.style.width = `${(audioPlayer.current.currentTime / audioPlayer.current.duration) * 100}%`;
     }
@@ -96,10 +96,10 @@ const MusicPlayer = () => {
         ref={audioPlayer}
         preload="metadata"
        />
-       <div className="lg:w-3/5 mx-auto mt-5 lg:mt-0">
+       <div className="lg:w-3/5 mx-auto mt-5 lg:mt-0 p-2">
         <h1 className="text-3xl font-bold mb-2">{music?.title}</h1>
         <p className="text-base opacity-60 mb-7">{music?.artist}</p>
-        <img src={music.photo} alt="cover image" className="block w-128 object-fit rounded-md mb-5" />
+        <img src={music.photo} alt="cover image" className="block w-128 object-fit rounded-md mb-5 mx-auto" />
         <div className="flex w-full relative mb-5">
           <span ref={thumbRef} className="absolute bg-white h-1.5 z-10 rounded-xl" ></span>
           <input type="range" className="w-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:z-20 [&::-webkit-slider-thumb]:border-none cursor-pointer appearance-none outline-none border-none rounded-xl h-1.5 bg-white/60" ref={progressBar} min={0} max={isNaN(audioPlayer.current?.duration) ? 100 : audioPlayer.current?.duration} onChange={changeProgress} />
@@ -117,7 +117,7 @@ const MusicPlayer = () => {
                 <FaForward className="opacity-60" />
               </span>
             </div>
-            <div onClick={onMuteClick} className="p-2 grid place-content-center rounded-full bg-white/10">
+            <div onClick={onMuteClick} className="p-2 grid place-content-center rounded-full bg-white/10 cursor-pointer">
               {isMuted ? <GoMute /> : <img src="/sound.svg" className="h-4 w-4" />}
             </div>
         </div>

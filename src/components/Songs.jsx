@@ -15,6 +15,10 @@ const Songs = ({ playlistId }) => {
         return loadingAnimation;
     }
     
+    if(data.getSongs.length === 0 && searchTerm) {
+       return <div className="my-10 mx-auto text-center">Couldn't find "{searchTerm}"</div>
+    }
+    console.log(data && searchTerm)
     if(!data) {
         return null
     }

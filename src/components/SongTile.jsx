@@ -4,6 +4,7 @@ import { convertMusicDuration } from "../utils/convertMusicDuration";
 import { memo, useRef } from "react";
 import ColorThief from "colorthief";
 import { arrayToRgb } from "../utils/arrayToRgb";
+import { useModalContext } from "../context/ModalContext";
 
 const getBase64 = async(url)=>{
 try {
@@ -36,7 +37,8 @@ const SongTile = ({ songData }) => {
     const { artist, duration, photo, title } = songData
     const convertedDuration = convertMusicDuration(duration)
     const { setGradient } = useGradientContext()
-    const { setMusic, setIsPlaying, isPlaying } = useMusicContext()
+    const { setMusic, music } = useMusicContext()
+    const { isModalOpen, setIsModalOpen } = useModalContext()
     const imageRef = useRef()
     
     const handleSongClick = async () => {
@@ -50,9 +52,10 @@ const SongTile = ({ songData }) => {
             setGradient(rgbValue)
         }
         setMusic(songData)
+        isModalOpen && setIsModalOpen(prev => !prev)
     }
     
-    return (<div onClick={handleSongClick} className="flex gap-3 items-center p-2 cursor-pointer">
+    return (<div onClick={handleSongClick} className={`flex gap-3 items-center p-2 cursor-pointer ${music?._id === songData?._id && "bg-white/10 rounded-md"}`}>
         <div className="overflow-hidden rounded-full">
             <img ref={imageRef} className="block w-14 h-12" src={photo} alt={title} />
         </div>
