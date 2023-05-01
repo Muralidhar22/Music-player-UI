@@ -4,7 +4,7 @@
  
 ## Salient Features
 
-- Debounced Search
+- Search songs in playlist
 - Music Control — Play/Pause/Next/Previous
 - Tab change
 - Controlling music via seeker

@@ -33,11 +33,11 @@ try {
  }
 
 
-const SongTile = ({ songData }) => {
-    const { artist, duration, photo, title } = songData
+const SongTile = ({ songIdx, next, prev }) => {
+    const { setMusicNum, allSongs, musicNum, setCurrentSongData } = useMusicContext()
+    const { artist, duration, photo, title } = allSongs[songIdx]
     const convertedDuration = convertMusicDuration(duration)
     const { setGradient } = useGradientContext()
-    const { setMusic, music } = useMusicContext()
     const { isModalOpen, setIsModalOpen } = useModalContext()
     const imageRef = useRef()
     
@@ -51,11 +51,13 @@ const SongTile = ({ songData }) => {
             const rgbValue = arrayToRgb(gradientColor)
             setGradient(rgbValue)
         }
-        setMusic(songData)
+        const newMusicData = {prev, current: songIdx, next}
+        setMusicNum(newMusicData)
+        setCurrentSongData(allSongs[songIdx])
         isModalOpen && setIsModalOpen(prev => !prev)
     }
     
-    return (<div onClick={handleSongClick} className={`flex gap-3 items-center p-2 cursor-pointer ${music?._id === songData?._id && "bg-white/10 rounded-md"}`}>
+    return (<div onClick={handleSongClick} className={`flex gap-3 items-center p-2 cursor-pointer ${songIdx === musicNum?.current && "bg-white/10 rounded-md"}`}>
         <div className="overflow-hidden rounded-full">
             <img ref={imageRef} className="block w-14 h-12" src={photo} alt={title} />
         </div>

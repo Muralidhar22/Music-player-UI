@@ -15,10 +15,11 @@ const MusicPlayer = () => {
     const animationRef = useRef(null)
     const thumbRef = useRef(null)
     const [isMuted, setIsMuted] = useState(false)
-    const { music, isPlaying, setIsPlaying } = useMusicContext()
+    const { musicNum, currentSongData, setCurrentSongData, isPlaying, setIsPlaying, allSongs, setMusicNum } = useMusicContext()
+    const music = allSongs && allSongs[musicNum?.current]
  
     useEffect(() => {
-      if(music) {
+      if(currentSongData && audioPlayer.current && progressBar.current) {
         audioPlayer.current.currentTime = 0
         progressBar.current.value = audioPlayer.current.currentTime
         thumbRef.current.style.width = `${(audioPlayer.current.currentTime / audioPlayer.current.duration) * 100}%`;
@@ -29,16 +30,26 @@ const MusicPlayer = () => {
       return () => {
         cancelAnimationFrame(animationRef.current)
       }
-    },[music])
+    },[currentSongData])
     
     const skipMusicHandler = (direction) => {
       if(isPlaying) {
         if(direction == "forward") {
-          progressBar.current.value = progressBar.current.value + 10
-          audioPlayer.current.currentTime = audioPlayer.current.currentTime + 10
+          const newMusicNumData = { 
+            prev: allSongs[musicNum?.next - 1] ? musicNum?.next - 1 : allSongs.length - 1 ,
+            current: musicNum?.next,
+            next: allSongs[musicNum?.next + 1] ? musicNum?.next + 1 : 0
+           }
+          setMusicNum(newMusicNumData)
+          setCurrentSongData(allSongs[musicNum?.next])
         } else {
-          progressBar.current.value = progressBar.current.value - 10 ?  progressBar.current.value - 10 : 0
-          audioPlayer.current.currentTime = audioPlayer.current.currentTime - 10 ? audioPlayer.current.currentTime - 10 : 0
+          const newMusicNumData = { 
+            prev: allSongs[musicNum?.prev - 1] ? musicNum?.prev - 1 : allSongs.length - 1 ,
+            current: musicNum?.prev,
+            next: allSongs[musicNum?.prev + 1] ? musicNum?.prev + 1 :  0
+           }
+          setMusicNum(newMusicNumData)
+          setCurrentSongData(allSongs[musicNum?.prev])
         }
       }
     }    
@@ -92,14 +103,14 @@ const MusicPlayer = () => {
 
     return (
        <>
-       <audio src={music?.url}
+       <audio src={currentSongData?.url}
         ref={audioPlayer}
         preload="metadata"
        />
        <div className="lg:w-3/5 mx-auto mt-5 lg:mt-0 p-2">
-        <h1 className="text-3xl font-bold mb-2">{music?.title}</h1>
-        <p className="text-base opacity-60 mb-7">{music?.artist}</p>
-        <img src={music.photo} alt="cover image" className="block w-128 object-fit rounded-md mb-5 mx-auto" />
+        <h1 className="text-3xl font-bold mb-2">{currentSongData?.title}</h1>
+        <p className="text-base opacity-60 mb-7">{currentSongData?.artist}</p>
+        <img src={currentSongData?.photo} alt="cover image" className="block w-128 object-fit rounded-md mb-5 mx-auto" />
         <div className="flex w-full relative mb-5">
           <span ref={thumbRef} className="absolute bg-white h-1.5 z-10 rounded-xl" ></span>
           <input type="range" className="w-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:z-20 [&::-webkit-slider-thumb]:border-none cursor-pointer appearance-none outline-none border-none rounded-xl h-1.5 bg-white/60" ref={progressBar} min={0} max={isNaN(audioPlayer.current?.duration) ? 100 : audioPlayer.current?.duration} onChange={changeProgress} />

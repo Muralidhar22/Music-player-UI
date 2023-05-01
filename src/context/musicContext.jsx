@@ -6,17 +6,23 @@ const MusicContext = createContext({
 })
 
 export const MusicProvider = ({ children }) => {
-    const [music, setMusic] = useState(null)
+    const [allSongs, setAllSongs] = useState()
+    const [musicNum, setMusicNum] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [searchTerm, setSearchTerm] = useState("")
+    const [currentSongData, setCurrentSongData] = useState()
     
     const value = {
-        music,
-        setMusic,
+        currentSongData,
+        setCurrentSongData,
+        musicNum,
+        setMusicNum,
         isPlaying,
         setIsPlaying,
         setSearchTerm,
-        searchTerm
+        searchTerm,
+        allSongs,
+        setAllSongs
     }
     return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>
 }
@@ -24,7 +30,7 @@ export const MusicProvider = ({ children }) => {
 export const useMusicContext = () => {
     const context = useContext(MusicContext);
     if (context === undefined) {
-        throw new Error('useTabContext must be used within a TabProvider');
+        throw new Error('useMusicContext must be used within a MusicProvider');
     }
   return context;
 }
