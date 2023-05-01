@@ -8,6 +8,10 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { GoMute } from "react-icons/go";
 import { useMusicContext } from "../context/musicContext";
+import { useGradientContext } from "../context/gradientContext";
+import ColorThief from "colorthief";
+import { getBase64 } from "../utils/getBase64";
+import { arrayToRgb } from "../utils/arrayToRgb";
 
 const MusicPlayer = () => {
     const audioPlayer = useRef(null) // audio tag
@@ -17,6 +21,7 @@ const MusicPlayer = () => {
     const [isMuted, setIsMuted] = useState(false)
     const { musicNum, currentSongData, setCurrentSongData, isPlaying, setIsPlaying, allSongs, setMusicNum } = useMusicContext()
     const music = allSongs && allSongs[musicNum?.current]
+    const { setGradient } = useGradientContext()
  
     useEffect(() => {
       if(currentSongData && audioPlayer.current && progressBar.current) {
@@ -32,8 +37,9 @@ const MusicPlayer = () => {
       }
     },[currentSongData])
     
-    const skipMusicHandler = (direction) => {
+    const skipMusicHandler = async (direction) => {
       if(isPlaying) {
+        let newMusicData;
         if(direction == "forward") {
           const newMusicNumData = { 
             prev: allSongs[musicNum?.next - 1] ? musicNum?.next - 1 : allSongs.length - 1 ,
@@ -42,6 +48,7 @@ const MusicPlayer = () => {
            }
           setMusicNum(newMusicNumData)
           setCurrentSongData(allSongs[musicNum?.next])
+          newMusicData = allSongs[musicNum?.next]
         } else {
           const newMusicNumData = { 
             prev: allSongs[musicNum?.prev - 1] ? musicNum?.prev - 1 : allSongs.length - 1 ,
@@ -50,6 +57,16 @@ const MusicPlayer = () => {
            }
           setMusicNum(newMusicNumData)
           setCurrentSongData(allSongs[musicNum?.prev])
+          newMusicData = allSongs[musicNum?.prev]
+        }
+        const imageData = await getBase64(newMusicData?.photo)
+        const colorThief = new ColorThief()
+        const image = new Image()
+        image.src = imageData
+        image.onload = function () {
+            const gradientColor = colorThief.getColor(image)
+            const rgbValue = arrayToRgb(gradientColor)
+            setGradient(rgbValue)
         }
       }
     }    
